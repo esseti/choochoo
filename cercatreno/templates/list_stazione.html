@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load cercatrenott %}
+
+{% block container %}
+     <div class="row-fluid">
+        <div class="span12 center">
+            <h2>Treni trovati</h2>
+            <h3>Da {{ stazione }}</h3>
+        </div>
+        <table class="table table-hover center">
+            <thead>
+            <th>#</th>
+            <th>Da</th>
+            <th>A</th>
+            <th>Delle ore</th>
+            <th>Binario*</th>
+            <th>Ritardo</th>
+            </thead>
+            {% for  treno in treni %}
+                <tr class="{{ treno.ritardo|note_to_class }}">
+                <td>{{treno.numero}}</td>
+                <td>{{treno.da|default:stazione}}</td>
+                <td>{{treno.per|default:stazione}}</td>
+                <td>{{treno.orario}}</td>
+                <td>{{treno.previsto}} / {{treno.reale}}</td>
+                <td>{{treno.ritardo}}</td>
+            {% endfor %}
+
+            </tr>
+        </table>
+    </div>
+    <div class="muted pull-right">* Binario Previsto / Binario Reale</div>
+{% endblock %}
+
+

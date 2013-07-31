@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load cercatrenott %}
+
+{% block container %}
+    <div class="row-fluid">
+        <div class="span12 center">
+            <h3>Treni trovati</h3>
+            <h3>{{ partenza }} -> {{ arrivo }}</h3>
+        </div>
+        <table class="table table-hover center">
+            <thead>
+            <th>#</th>
+            <th>Orario partenza</th>
+            <th>Orario Arrivo</th>
+            <th>Note</th>
+            </thead>
+            {% for treno in treni %}
+                <tr class="{{ treno.note|note_to_class }}">
+                <td>{{treno.treno}}</td>
+                <td>{{treno.partenza.orario}}</td>
+                <td>{{treno.arrivo.orario}}</td>
+                <td>{{treno.note}}</td>
+            {% endfor %}
+
+            </tr>
+        </table>
+    </div>
+{% endblock %}
+
+

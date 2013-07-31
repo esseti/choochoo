@@ -1,0 +1,19 @@
+application: st-trenitalia
+version: 3
+runtime: python27
+api_version: 1
+threadsafe: true
+
+handlers:
+- url: /.*
+  script: main.app
+
+error_handlers:
+  - file: cercatreno/templates/error.html
+
+libraries:
+- name: django
+  version: "1.5"
+- name: lxml
+  version: "latest"
+

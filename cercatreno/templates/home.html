@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+
+
+{% block container %}
+    <div class="row-fluid">
+        <div class="span12 center">
+            <h1>Benvenuto</h1>
+
+            <div>
+                <div class="span12 center">
+                    <p>Qui puoi controllare con un click i ritardi di trenitalia in tempo reale</p>
+
+                    <p>Cerca i ritardi per {% comment %}<a href="{% url "percorso" %}">percorso</a> o per {% endcomment %} <a
+                            href="{% url "stazione" %}">stazione</a></p>
+
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+

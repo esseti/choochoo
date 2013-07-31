@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load static from staticfiles %}
+
+{% block pagetitle %} Cerca ritardo treni {% endblock %}
+{% autoescape on %}
+    {% block container %}
+        {% crispy form %}
+    {% endblock %}
+{% endautoescape %}
+{% block script_head %}
+
+
+
+
+{% endblock %}
+
+{% block script_footer %}
+
+
+    <script src="{% static 'data/stazioni_nomi.js' %}"></script>
+    <script>
+        $('.search').typeahead({
+            items: 10,
+            source: stazioni
+        })
+    </script>
+    {#    $('#form').submit(function () {#}
+    {#    alert("ciao");#}
+    {#    $('#loading').modal('toggle');#}
+    {#    $.ajax({#}
+    {#    type: "POST",#}
+    {#    url: '/ritardi/',#}
+    {#    data: {'csrfmiddlewaretoken': '{{ csrf_token }}'},#}
+    {#    success: function (data) {#}
+    {#    $('#loading').modal('hide');#}
+    {#    alert(data)#}
+    {#    },#}
+    {#    });#}
+    {#    return true;#}
+    {#    })#}
+    {#    ;#}
+
+{% endblock %}
+
