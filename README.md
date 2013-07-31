@@ -9,7 +9,8 @@ This code can be partially reused.
 
 ### 4 DEVELOPERS
 If you want to use the code, you need to install requests and crispy-forms in a manual way.
-the simplest is to install them via pip and then create a symbolic link in the project main folder.
+the simplest is to install them via pip and then create a symbolic link in the project main folder.   
+
 *PS: if you don't get those two lines, then don't program :)*
 
 ### NOTE:
