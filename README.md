@@ -15,6 +15,6 @@ The simplest way is to install them via pip and then create a symbolic link in t
 
 ### NOTE:
 - all the data belong to trenitalia.
-- this is not for profit, so if you (trenitalia) don't like it pls speck up before sue me :)
+- this is not for profit, so if you (trenitalia) don't like it pls speak up before sue me :)
 - the code is badly and partialy commented (sorry, i'll fix once i've time).
 - most of the code names are in italian (or pseudo italian).
