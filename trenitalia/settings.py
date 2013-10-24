@@ -172,3 +172,5 @@ LOGGING = {
 }
 
 ALLOWED_HOSTS=['st-trenitalia.appspot.com','trenitalia.stefanotranquillini.me']
+
+CRISPY_TEMPLATE_PACK = 'bootstrap'

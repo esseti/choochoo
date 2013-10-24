@@ -31,7 +31,7 @@ class StazioneForm(Form):
 
     def __init__(self, *args, **kwargs):
         self.helper = FormHelper()
-        self.helper.form_method = 'post'
+        self.helper.form_method = 'get'
         self.helper.form_id = 'form'
         self.helper.layout = Layout(Fieldset('Cerca treni', Field('stazione', css_class="search")))
         submit = Submit('submit', 'Invia', data_loading_text="Loading...")
@@ -48,7 +48,7 @@ class StazioneFormChoices(Form):
         self.helper = FormHelper()
         stazioni = kwargs.pop('stazioni')
         log.debug(stazioni)
-        self.helper.form_method = 'post'
+        self.helper.form_method = 'get'
         self.helper.form_id = 'form'
         self.helper.layout = Layout(Fieldset('Cerca treni', 'stazione'))
         submit = Submit('submit', 'Invia', data_loading_text="Loading...")
