@@ -1,19 +1,20 @@
 application: st-trenitalia
-version: 4-get
+version: 1-api
 runtime: python27
 api_version: 1
 threadsafe: true
 
 handlers:
-- url: /.*
-  script: main.app
-
-error_handlers:
-  - file: cercatreno/templates/error.html
+# Endpoints handler
+- url: /_ah/spi/.*
+  script: choochoo.APPLICATION
 
 libraries:
-- name: django
-  version: "1.5"
+- name: webapp2
+  version: "2.5.2"
+- name: pycrypto
+  version: latest
+- name: endpoints
+  version: 1.0
 - name: lxml
-  version: "latest"
-
+  version: latest

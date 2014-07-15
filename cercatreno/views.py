@@ -185,44 +185,43 @@ def stazione(request):
                                               {'stazione': s_stazione},
                                               context_instance=RequestContext(request))
             else:
+                treni = {}
                 for bloccorisultato in bloccorisultati:
-                    treni = {}
-                    for bloccorisultato in bloccorisultati:
 
-                        treno_h2 = bloccorisultato.find(".//h2")
-                        numero = treno_h2.text
-                        if numero in treni:
-                            treno = treni[numero]
+                    treno_h2 = bloccorisultato.find(".//h2")
+                    numero = treno_h2.text
+                    if numero in treni:
+                        treno = treni[numero]
+                    else:
+                        treno={}
+                        treno['numero'] = treno_h2.text
+                        treni[numero]=treno
+                    bloccotreno = bloccorisultato.find_class("bloccotreno")[0].text_content().translate(None,
+                                                                                                        "\n\r\t")
+                    bloccotreno = re.sub(' +', ' ', bloccotreno)
+                    frasi = [('Delle ore','orario'), ('Binario Previsto:','previsto'), ('Binario Reale:','reale')]
+                    if "Per " in bloccotreno:
+                        treno['per']=bloccotreno[len("Per "):bloccotreno.index(frasi[0][0])]
+
+                        bloccotreno = sottrai(bloccotreno, "Per ")
+                    else:
+                        treno['da']=bloccotreno[len("Da "):bloccotreno.index(frasi[0][0])]
+                        bloccotreno = sottrai(bloccotreno, "Da ")
+
+                    for i in range(0, len(frasi)):
+                        if (i + 1) < len(frasi):
+                            treno[frasi[i][1]] = sottostringa(bloccotreno, frasi[i][0], (frasi[i + 1][0]))
                         else:
-                            treno={}
-                            treno['numero'] = treno_h2.text
-                            treni[numero]=treno
-                        bloccotreno = bloccorisultato.find_class("bloccotreno")[0].text_content().translate(None,
-                                                                                                            "\n\r\t")
-                        bloccotreno = re.sub(' +', ' ', bloccotreno)
-                        frasi = [('Delle ore','orario'), ('Binario Previsto:','previsto'), ('Binario Reale:','reale')]
-                        if "Per " in bloccotreno:
-                            treno['per']=bloccotreno[len("Per "):bloccotreno.index(frasi[0][0])]
-
-                            bloccotreno = sottrai(bloccotreno, "Per ")
-                        else:
-                            treno['da']=bloccotreno[len("Da "):bloccotreno.index(frasi[0][0])]
-                            bloccotreno = sottrai(bloccotreno, "Da ")
-
-                        for i in range(0, len(frasi)):
-                            if (i + 1) < len(frasi):
-                                treno[frasi[i][1]] = sottostringa(bloccotreno, frasi[i][0], (frasi[i + 1][0]))
-                            else:
-                                realeandritardo = sottostringa(bloccotreno, frasi[i][0])
-                                if "in orario" in realeandritardo:
-                                    treno['reale'] = realeandritardo[:realeandritardo.index("in orario")]
-                                    treno['ritardo'] = "in orario"
-                                elif "ritardo" in realeandritardo:
-                                    treno['reale'] = realeandritardo[:realeandritardo.index("ritardo")]
-                                    treno['ritardo'] = "ritardo %s" % (
-                                    realeandritardo[realeandritardo.index("ritardo") + len("ritardo"):])
-                                # print ("treno[frasi[i]]=%s"%treno[frasi[i]])
-                            bloccotreno = sottrai(bloccotreno, frasi[i][0])
+                            realeandritardo = sottostringa(bloccotreno, frasi[i][0])
+                            if "in orario" in realeandritardo:
+                                treno['reale'] = realeandritardo[:realeandritardo.index("in orario")]
+                                treno['ritardo'] = "in orario"
+                            elif "ritardo" in realeandritardo:
+                                treno['reale'] = realeandritardo[:realeandritardo.index("ritardo")]
+                                treno['ritardo'] = "ritardo %s" % (
+                                realeandritardo[realeandritardo.index("ritardo") + len("ritardo"):])
+                            # print ("treno[frasi[i]]=%s"%treno[frasi[i]])
+                        bloccotreno = sottrai(bloccotreno, frasi[i][0])
                 treni_t =  sorted(treni.values(), key=lambda k: k['orario'])
 
                 return render_to_response('list_stazione.html',
