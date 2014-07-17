@@ -1,5 +1,5 @@
 application: st-trenitalia
-version: 4-get
+version: 5-bug-fix
 runtime: python27
 api_version: 1
 threadsafe: true
