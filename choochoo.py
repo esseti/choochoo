@@ -22,12 +22,11 @@ class Stazione(messages.Message):
 
 class Treno(messages.Message):
     numero = messages.StringField(1)
-    da = messages.StringField(2)
-    per = messages.StringField(3)
-    orario = messages.StringField(4)
-    previsto = messages.StringField(5)
-    reale = messages.StringField(6)
-    ritardo = messages.StringField(7)
+    direzione = messages.StringField(2)
+    orario = messages.StringField(3)
+    # previsto = messages.StringField(4)
+    # reale = messages.StringField(5)
+    ritardo = messages.IntegerField(4)
 
 
 class Treni(messages.Message):
@@ -98,15 +97,17 @@ class ChooChooApi(remote.Service):
                 bloccotreno = re.sub(' +', ' ', bloccotreno)
                 # phrases to remove
                 frasi = [('Delle ore', 'orario'), ('Binario Previsto:', 'previsto'), ('Binario Reale:', 'reale')]
-                treno['per'] = reale.upper()
-                treno['da'] = reale.upper()
+                # treno['per'] = reale.upper()
+                # treno['da'] = reale.upper()
                 # get from
                 if "Per " in bloccotreno:
-                    treno['per'] = bloccotreno[len("Per "):bloccotreno.index(frasi[0][0])]
+                    if 'direzione' not in treno:
+                        treno['direzione'] = bloccotreno[len("Per "):bloccotreno.index(frasi[0][0])]
                     bloccotreno = sottrai(bloccotreno, "Per ")
                 #    get to
                 else:
-                    treno['da'] = bloccotreno[len("Da "):bloccotreno.index(frasi[0][0])]
+                    if 'direzione' not in treno:
+                        treno['direzione'] = bloccotreno[len("Da "):bloccotreno.index(frasi[0][0])]
                     bloccotreno = sottrai(bloccotreno, "Da ")
                 # remove the phrases
                 for i in range(0, len(frasi)):
@@ -118,10 +119,10 @@ class ChooChooApi(remote.Service):
                         realeandritardo = sottostringa(bloccotreno, frasi[i][0])
                         if "in orario" in realeandritardo:
                             treno['reale'] = realeandritardo[:realeandritardo.index("in orario")]
-                            treno['ritardo'] = "in orario"
+                            treno['ritardo'] = "0"
                         elif "ritardo" in realeandritardo:
                             treno['reale'] = realeandritardo[:realeandritardo.index("ritardo")]
-                            treno['ritardo'] = "ritardo %s" % (
+                            treno['ritardo'] = "%s" % (
                                 realeandritardo[realeandritardo.index("ritardo") + len("ritardo"):])
                     # remove the data.
                     bloccotreno = sottrai(bloccotreno, frasi[i][0])
@@ -130,8 +131,11 @@ class ChooChooApi(remote.Service):
             treni = []
             for treno in treni_t:
                 logging.debug(treno)
-                treni.append(Treno(numero=treno['numero'].strip(), da=treno['da'].strip(), per=treno['per'].strip(), orario=treno['orario'].strip(),
-                                   previsto=treno['previsto'].strip(), reale=treno['reale'].strip(), ritardo=treno['ritardo'].strip()))
+                # treni.append(Treno(numero=treno['numero'].strip(), da=treno['da'].strip(), per=treno['per'].strip(), orario=treno['orario'].strip(),
+                # previsto=treno['previsto'].strip(), reale=treno['reale'].strip(), ritardo=treno['ritardo'].strip()))
+                treni.append(Treno(numero=treno['numero'].strip(), direzione=treno['direzione'].strip(),
+                                   orario=treno['orario'].strip(),
+                                   ritardo=int(treno['ritardo'].strip())))
             return Treni(treni=treni)
 
 
